@@ -1,0 +1,15 @@
+Run once dependencies have been installed
+$ node index.js
+You'll need to wait at least 5 seconds, 
+calls to the Google Maps API need to be delayed
+
+I really should implement exponential backoff
+https://developers.google.com/analytics/devguides/reporting/core/v3/errors#backoff
+
+DEPENDENCIES
+
+This one's needed
+$ npm install request
+
+This one's not needed anymore, but it might be needed again in the future
+$ npm install @google/maps
