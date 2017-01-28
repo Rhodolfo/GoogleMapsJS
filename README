@@ -1,3 +1,10 @@
+Right now this just returns all stablishments 
+in a nearbyPlace search query to Google Maps 
+within a circle of a certain radius centered around a certain coordinate.
+
+Your Google API key must be set in http.js
+Coords are set in index.js (for now, I'll change this).
+
 Run once dependencies have been installed
 $ node index.js
 You'll need to wait at least 5 seconds, 
@@ -10,6 +17,3 @@ DEPENDENCIES
 
 This one's needed
 $ npm install request
-
-This one's not needed anymore, but it might be needed again in the future
-$ npm install @google/maps
