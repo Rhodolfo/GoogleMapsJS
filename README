@@ -13,6 +13,12 @@ calls to the Google Maps API need to be delayed
 I really should implement exponential backoff
 https://developers.google.com/analytics/devguides/reporting/core/v3/errors#backoff
 
+Disk covering problem (this is relevant)
+https://en.wikipedia.org/wiki/Disk_covering_problem
+
+Docs on google places API
+https://developers.google.com/places/web-service/search
+
 DEPENDENCIES
 
 This one's needed

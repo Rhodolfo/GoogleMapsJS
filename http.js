@@ -1,37 +1,47 @@
 var request = require("request");
-var apikey  = "KEYHERE";
+var apikey  = "";
+var uri  = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 
-// Headers don't seem to be required at all here
-var head = {
-	'Host': 'maps.googleapis.com', 
-	'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0',
-	'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-	'Accept-Language': 'en-US,en;q=0.5',
-	'Accept-Encoding': 'gzip, deflate, br',
-	'Connection': 'keep-alive',
-	'Upgrade-Insecure-Requests': '1',
-	'Cache-Control': 'max-age=0'
-};
-
+function request2GMaps(obj,callback) {
+	request({url:uri, qs:obj}, function(err,response,body) {
+		if(err) {
+			console.log(err); 
+			process.exit();
+		}
+		try {
+			var json = JSON.parse(body);
+		} catch(e) {
+			console.log("Probably a connection error, error thrown:");
+			console.log(e);
+			console.log("Message response:");
+			console.log(response);
+			console.log("Message body:");
+			console.log(body);
+			process.exit();
+		}
+		if (!(json.status=== "OK"||json.status==="ZERO_RESULTS")) {
+			console.log("GMaps has thrown an error:");
+			console.log(uri);
+			console.log(obj);
+			console.log(json);
+			process.exit();
+		}
+		callback(response,json);
+	});
+}
 
 // No pagetoken HTTP request, it's the first call to any search
-exports.doHTTP = function(loc,rad,callback) {
-	var path = "/maps/api/place/nearbysearch/json";
-	var uri  = "https://maps.googleapis.com"+path;
-	var obj  = {key:apikey,location:loc,radius:rad,name:""};
-	request({url:uri, qs:obj}, function(err,response,body) {
-		if(err) { console.log(err); return; }
-		callback(response,body);
-	});
+exports.doHTTP = function(coords,rad,kwd,callback) {
+	var loc = coords.lat.toString() + "," + coords.lon.toString();
+	var obj = {key:apikey,location:loc,radius:rad};
+	if (!(kwd==="" || kwd===null)) {
+		obj.keyword = kwd;
+	}
+	request2GMaps(obj,callback);
 }
 
 // Pagetoken HTTP request
 exports.doHTTP2 = function(token,callback) {
-	var path = "/maps/api/place/nearbysearch/json";
-	var uri  = "https://maps.googleapis.com"+path;
 	var obj  = {key:apikey,pagetoken:token};
-	request({url:uri, qs:obj}, function(err,response,body) {
-		if(err) { console.log(err); return; }
-		callback(response,body);
-	});
+	request2GMaps(obj,callback);
 }
