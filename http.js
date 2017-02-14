@@ -5,6 +5,7 @@ var uri  = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
 function request2GMaps(obj,callback) {
 	request({url:uri, qs:obj}, function(err,response,body) {
 		if(err) {
+			// Here's where the app is throwing [Error: getaddrinfo EAI_AGAIN maps.googleapis.com:443]
 			console.log(err); 
 			process.exit();
 		}
